@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D _rb;
     private float moveInput;
     [SerializeField] private TouchInput _touchInputSystem;
+    public GameObject _pointCam;
     private static Player _instance;
     public static Player Instance
     {
@@ -31,6 +32,7 @@ public class Player : MonoBehaviour
         _rb = GetComponent<Rigidbody2D>();
     }
     public void Jump(int force = 1){
+        //gameObject.GetComponent<Animator>().SetTrigger("Jump");
         Vector3 vel = _rb.velocity;
         vel.y = 0;
         _rb.velocity = vel;
@@ -42,7 +44,16 @@ public class Player : MonoBehaviour
             if(_touchInputSystem.GetDirection() == Vector2.up){
                 Jump();
             }
-            Debug.Log("a");
+        }
+        if (Input.GetKeyDown("space"))
+        {
+            Jump();
+        }
+        if(_rb.velocity.y < 0f){
+            gameObject.GetComponent<Animator>().SetBool("Fallen",true);
+        }else{
+            gameObject.GetComponent<Animator>().SetBool("Fallen",false);
+
         }
     }
      void FixedUpdate()

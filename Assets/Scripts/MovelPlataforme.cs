@@ -8,9 +8,12 @@ public class MovelPlataforme : Plataforme
     [SerializeField] private string _orientation = "horizontal";
     private int _direction = 1;
     private Vector3 _startPos;
+    void Start()
+    {
+        _speed = Random.Range(1f,2f);
+    }
     void Update()
     {
-        
         if(_orientation == "horizontal"){
             if(transform.position.x > GameManager.Instance.screenSize-1){
                 _direction = -1;

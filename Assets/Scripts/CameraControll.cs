@@ -18,7 +18,7 @@ public class CameraControll : MonoBehaviour
     {
         maxHeight = 0;
         _startMarker = transform;
-        _endMarker = Player.Instance.transform;
+        _endMarker = Player.Instance._pointCam.transform;
         // Keep a note of the time the movement started.
         _startTime = Time.time;
 
@@ -30,7 +30,7 @@ public class CameraControll : MonoBehaviour
     void Update()
     {
         if(transform.position.y > maxHeight){
-            maxHeight = transform.position.y + 2;
+            maxHeight = maxHeight+2;
         }
         if(_endMarker.position.y > maxHeight){
             // Distance moved equals elapsed time times speed..
@@ -38,7 +38,7 @@ public class CameraControll : MonoBehaviour
             // Fraction of journey completed equals current distance divided by total distance.
             float fractionOfJourney = distCovered / _journeyLength;
             // Set our position as a fraction of the distance between the markers.
-            _targetPosition = Vector3.Lerp(_startMarker.position, _endMarker.position, fractionOfJourney);
+            _targetPosition = Vector3.Lerp(_startMarker.position, _endMarker.position , fractionOfJourney);
             transform.position = new Vector3(transform.position.x,_targetPosition.y,transform.position.z);
         }
     }

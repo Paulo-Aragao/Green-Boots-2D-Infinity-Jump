@@ -2,11 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     private float _maxHeight = 0;
-    [SerializeField] private GameObject[] _prefab;
+    [SerializeField] private GameObject[] _prefabPlataformes;
+    [SerializeField] private GameObject[] _prefabPowerUps;
+    [SerializeField] private GameObject[] _prefabEnemys;
+    [SerializeField] private TMP_Text _height;
+    [SerializeField] private Transform _heightColletor;
+    [SerializeField] private SnowControll _snowControll;
+    public Text fpsText;
+    public float deltaTime;
+    //config general const
+    public float screenSize = 6;
+    private int _lastHeight = 6;
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -26,48 +37,125 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        _height.text = _lastHeight.ToString();
         CreatePlataforms();
         _maxHeight = 32;
     }
 
-    public Text fpsText;
-    public float deltaTime;
-    //config general const
-    public float screenSize = 6;
     void Update () {
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
         fpsText.text = Mathf.Ceil (fps).ToString ();
-        if(Player.Instance.transform.position.y > _maxHeight){
+        if(_heightColletor.position.y > _maxHeight){
             CreatePlataforms();
-            _maxHeight = Player.Instance.transform.position.y + 32;
+            _maxHeight = _heightColletor.position.y + 32;
         }
+        if(Player.Instance.transform.position.y > _lastHeight){
+            _lastHeight = (int)Player.Instance.transform.position.y;
+            _height.text = ((_lastHeight*2)+12).ToString();
+        }   
+        
+        
     }
     private void CreatePlataforms(){
+        GameObject[] prefabsPlataforme;
+        GameObject[] prefabsPowerUp;
+        GameObject[] prefabsEnemys;
+        //levels dificult
+        //Very hard
+        if(_lastHeight > 10000 ){
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
+        }else if(_lastHeight > 1200 ){//mid-high
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[1],_prefabPlataformes[2],_prefabPlataformes[3]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,5,7,0);
+        }
+        else if(_lastHeight > 750 ){//mid-high
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0],_prefabPlataformes[1],_prefabPlataformes[2],_prefabPlataformes[3]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
+        }else if(_lastHeight > 500 ){//mid-high
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0],_prefabPlataformes[1],_prefabPlataformes[2]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
+        }else if(_lastHeight > 250 ){//middle
+            
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0],_prefabPlataformes[1]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
+        }else{//base
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
+            SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,4,0);
+        }
+        _snowControll.IncreaseSnow();
+    }
+    private void SpawnPlataformes(GameObject[] prefabsPlataforme,GameObject[] prefabsPowerUps,GameObject[] prefabsEnemys,int rateExtraPlataform, int ratePowerUp, int rateEnemys){
         float position = _maxHeight;
         int randPositionIndex;
         int randPrefabIndex;
-        var postiions = new float[]{-4.5f,-2.2f,0f,2.2f,4.5f}; 
+        var postiions = new float[]{-4f,-2f,0f,2f,4f};
         for (int i = 0; i < 8; i++)
         {
             position +=4;
             randPositionIndex =  Random.Range(0, 4);
-            randPrefabIndex = Random.Range(0, _prefab.Length-1);;
-            Instantiate(_prefab[randPrefabIndex], new Vector3(postiions[randPositionIndex],position, 0), Quaternion.identity);
+            randPrefabIndex = Random.Range(0, prefabsPlataforme.Length);
+            Instantiate(prefabsPlataforme[randPrefabIndex], new Vector3(postiions[randPositionIndex],position, 0), Quaternion.identity);
+            if(Random.Range(0, rateExtraPlataform) == 1){//extra plataformes
+                randPositionIndex =  Random.Range(0, 4);
+                randPrefabIndex = Random.Range(0, prefabsPlataforme.Length);
+                Instantiate(_prefabPlataformes[randPrefabIndex], new Vector3(postiions[randPositionIndex],position+2, 0), Quaternion.identity);
+            }
+            if(Random.Range(0, rateExtraPlataform) == 1){//extra plataformes
+                randPositionIndex =  Random.Range(0, 4);
+                randPrefabIndex = Random.Range(0, prefabsPlataforme.Length);
+                Instantiate(_prefabPlataformes[randPrefabIndex], new Vector3(postiions[randPositionIndex],position-2, 0), Quaternion.identity);
+            }
+            if(Random.Range(0, ratePowerUp) == 1){
+                randPositionIndex =  Random.Range(0, 4);
+                randPrefabIndex = Random.Range(0, prefabsPowerUps.Length);
+                Instantiate(prefabsPowerUps[randPrefabIndex], new Vector3(postiions[randPositionIndex],position-2, 0), Quaternion.identity);
+            }
+            if(Random.Range(0, rateEnemys) == 1){
+                randPositionIndex =  Random.Range(0, 4);
+                randPrefabIndex = Random.Range(0, prefabsEnemys.Length);
+                Instantiate(prefabsEnemys[randPrefabIndex], new Vector3(postiions[randPositionIndex],position-2, 0), Quaternion.identity);
+            }
         }
     }
     public void RestartLevel(){
-        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Plataforme");
+        GameObject[] plataforms = GameObject.FindGameObjectsWithTag("Plataforme");
+        for(int i=0; i< plataforms.Length; i++)
+        {
+            GameObject.Destroy(plataforms[i]);
+        }
+        GameObject[] powerups = GameObject.FindGameObjectsWithTag("PowerUp");
+        for(int i=0; i< powerups.Length; i++)
+        {
+            GameObject.Destroy(powerups[i]);
+        }
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
         for(int i=0; i< enemies.Length; i++)
         {
             GameObject.Destroy(enemies[i]);
         }
+        _snowControll.ResetSnow();
         _maxHeight = 0;
-        Instantiate(_prefab[0], new Vector3(0,-9, 0), Quaternion.identity);
-        Instantiate(_prefab[0], new Vector3(-2.5f,-6, 0), Quaternion.identity);
-        Instantiate(_prefab[0], new Vector3(2.5f,-3, 0), Quaternion.identity);
-        Instantiate(_prefab[0], new Vector3(-2.5f,0, 0), Quaternion.identity);
-        Instantiate(_prefab[0], new Vector3(2.5f,3, 0), Quaternion.identity);
+        _lastHeight = 0;    
+        _height.text = _lastHeight.ToString();
+        Instantiate(_prefabPlataformes[0], new Vector3(0,-9, 0), Quaternion.identity);
+        Instantiate(_prefabPlataformes[0], new Vector3(-2.5f,-6, 0), Quaternion.identity);
+        Instantiate(_prefabPlataformes[0], new Vector3(2.5f,-3, 0), Quaternion.identity);
+        Instantiate(_prefabPlataformes[0], new Vector3(-2.5f,0, 0), Quaternion.identity);
+        Instantiate(_prefabPlataformes[0], new Vector3(2.5f,3, 0), Quaternion.identity);
         CreatePlataforms();
         _maxHeight = 32;
         GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
