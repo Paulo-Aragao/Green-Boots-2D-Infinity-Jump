@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject[] _prefabPowerUps;
     [SerializeField] private GameObject[] _prefabEnemys;
     [SerializeField] private TMP_Text _height;
+    [SerializeField] private TMP_Text _record_height;
     [SerializeField] private Transform _heightColletor;
     [SerializeField] private SnowControll _snowControll;
     public Text fpsText;
@@ -37,6 +38,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString();
         _height.text = _lastHeight.ToString();
         CreatePlataforms();
         _maxHeight = 32;
@@ -70,7 +72,7 @@ public class GameManager : MonoBehaviour
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
         }else if(_lastHeight > 1200 ){//mid-high
             prefabsPlataforme = new GameObject[] {_prefabPlataformes[1],_prefabPlataformes[2],_prefabPlataformes[3]};
-            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
+            prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]}; 
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,5,7,0);
         }
@@ -80,7 +82,7 @@ public class GameManager : MonoBehaviour
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
         }else if(_lastHeight > 500 ){//mid-high
-            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0],_prefabPlataformes[1],_prefabPlataformes[2]};
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[4],_prefabPlataformes[5],_prefabPlataformes[2]};
             prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
@@ -96,7 +98,11 @@ public class GameManager : MonoBehaviour
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,4,0);
         }
-        _snowControll.IncreaseSnow();
+        if(_heightColletor.position.y > 2500){
+            _snowControll.gameObject.GetComponent<ParticleSystem>().Stop();
+        }else{
+            _snowControll.IncreaseSnow();
+        }
     }
     private void SpawnPlataformes(GameObject[] prefabsPlataforme,GameObject[] prefabsPowerUps,GameObject[] prefabsEnemys,int rateExtraPlataform, int ratePowerUp, int rateEnemys){
         float position = _maxHeight;
@@ -132,6 +138,12 @@ public class GameManager : MonoBehaviour
         }
     }
     public void RestartLevel(){
+        if(((_lastHeight+6)*2) > PlayerPrefs.GetInt("HighHeightScore"))
+        {
+            PlayerPrefs.SetInt("HighHeightScore" , ((_lastHeight+6)*2));
+            PlayerPrefs.Save ();
+            _record_height.text = ((_lastHeight+6)*2).ToString();
+        }
         GameObject[] plataforms = GameObject.FindGameObjectsWithTag("Plataforme");
         for(int i=0; i< plataforms.Length; i++)
         {

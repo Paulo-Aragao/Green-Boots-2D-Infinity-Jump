@@ -23,4 +23,11 @@ public class SnowControll : MonoBehaviour
         var emission = gameObject.GetComponent<ParticleSystem>().emission;
         emission.rateOverTime = _emission;
     }
+    public void StopSnow(){
+        _emission = 0;
+        var main = gameObject.GetComponent<ParticleSystem>().main;
+        main.simulationSpeed = 0f;
+        var emission = gameObject.GetComponent<ParticleSystem>().emission;
+        emission.rateOverTime = _emission;
+    }
 }
