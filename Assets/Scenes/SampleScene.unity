@@ -7648,7 +7648,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -52.325, y: -261}
+  m_AnchoredPosition: {x: -6.77, y: -240}
   m_SizeDelta: {x: 363.3501, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &403774818
@@ -8949,7 +8949,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f5274ae6c137fa4bbf15e36904a89f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 33.75
+  jumpForce: 34.2
   moveForce: 4
   _touchInputSystem: {fileID: 597516110}
   _pointCam: {fileID: 616177346}
@@ -9059,7 +9059,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 713103214}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: -6.29, z: 0}
+  m_LocalPosition: {x: -0, y: -0.51, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 205998453}
@@ -9303,7 +9303,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 735602858}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2091471196}
+        m_TargetAssemblyTypeName: Market, Assembly-CSharp
+        m_MethodName: BuyFashion
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &735602858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11505,7 +11517,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 52.325012, y: 0}
+  m_AnchoredPosition: {x: 46.6, y: 0}
   m_SizeDelta: {x: 249.9498, y: 69.4183}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &984098867
@@ -11562,7 +11574,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -13964,7 +13976,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -21406,7 +21418,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 2
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -28943,7 +28955,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1340241226}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2091471196}
+        m_TargetAssemblyTypeName: Market, Assembly-CSharp
+        m_MethodName: BuyCoinPlus
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1340241226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29064,7 +29088,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1363333049}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2091471196}
+        m_TargetAssemblyTypeName: Market, Assembly-CSharp
+        m_MethodName: BuyRokket
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1363333049
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42745,7 +42781,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 10000
+  m_text: a
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: b4d6d4ffc8a61a64599832a12bf2d489, type: 2}
   m_sharedMaterial: {fileID: -1745974850654620400, guid: b4d6d4ffc8a61a64599832a12bf2d489, type: 2}
@@ -50346,6 +50382,7 @@ GameObject:
   - component: {fileID: 2091471195}
   - component: {fileID: 2091471194}
   - component: {fileID: 2091471196}
+  - component: {fileID: 2091471197}
   m_Layer: 5
   m_Name: Results e Mark
   m_TagString: Untagged
@@ -50424,13 +50461,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f903a4f6807ad9f40bcba56597c12964, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _fashion_cost_tmp: {fileID: 1395663513}
+  _rokket_cost_tmp: {fileID: 424938853}
+  _coin_plus_cost_tmp: {fileID: 1897044027}
+  _fashion_cost_upgrade_bt: {fileID: 735602855}
+  _rokket_cost_upgrade_bt: {fileID: 1363333046}
+  _coin_plus_cost_upgrade_bt: {fileID: 1340241223}
+  _fashion_cost_values: 64000000f4010000d0070000
+  _rokket_cost_values: f4010000dc05000088130000
+  _coin_plus_cost_values: e80300008813000010270000
+  _total_coins: {fileID: 984098867}
+--- !u!114 &2091471197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2091471192}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21aa8f2e6c4fb545892a1b572f0c8fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _new_coins: {fileID: 1248385476}
   _coins: {fileID: 984098867}
   _height_final: {fileID: 1086500763}
   _new_record_pop_up: {fileID: 102111636}
-  _fashion_cost: {fileID: 1395663513}
-  _rokket_cost: {fileID: 424938853}
-  _coin_plus_cost: {fileID: 1897044027}
 --- !u!1 &2098516529
 GameObject:
   m_ObjectHideFlags: 0

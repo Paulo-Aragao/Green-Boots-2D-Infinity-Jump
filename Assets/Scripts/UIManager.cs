@@ -5,15 +5,38 @@ using UnityEngine.UI;
 using TMPro;
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private TMP_Text _new_coins;
+    [SerializeField] private TMP_Text _coins;
+    [SerializeField] private TMP_Text _height_final;
+    [SerializeField] private GameObject _new_record_pop_up;
+    
+    //
+    private bool _calculating = true;
+    private int _current_coins = 0;
+    private int _total_coins = 0;
+    void OnEnable()
     {
-        
+        _calculating = true;
+        _current_coins = PlayerPrefs.GetInt("Coins");
+        _total_coins = PlayerPrefs.GetInt("Coins")+GameManager.Instance.GetCoins();
+        _new_coins.text ="+" + GameManager.Instance.GetCoins().ToString();
+        _height_final.text = GameManager.Instance.GetHeight().ToString();
+        if(GameManager.Instance.GetHeight() > PlayerPrefs.GetInt("Coins")){
+            _new_record_pop_up.SetActive(true);
+        }else{
+            _new_record_pop_up.SetActive(false);
+        }
     }
-
-    // Update is called once per frame
     void Update()
     {
-        
+        if(_calculating){
+            if(_current_coins <= _total_coins){
+                _current_coins++;
+                PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")+1);
+                _coins.text = PlayerPrefs.GetInt("Coins").ToString();
+            }else{
+                _calculating = false;
+            }
+        }
     }
 }

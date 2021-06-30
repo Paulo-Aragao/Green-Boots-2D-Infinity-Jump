@@ -9,11 +9,15 @@ public class GameManager : MonoBehaviour
     private float _maxHeight = 0;
     private int _lastHeight = 6;
     private int _coins = 0;
+    //power ups
+    private int _rokket_impulse_remaining = 1;
+    private int _rokket_impulse_level = 1;
+    private int _fashion_level = 1;
+    private int _coin_plus_level = 1;
     [SerializeField] private GameObject _resultPanel;
     [SerializeField] private GameObject[] _prefabPlataformes;
     [SerializeField] private GameObject[] _prefabPowerUps;
     [SerializeField] private GameObject[] _prefabEnemys;
-
     [SerializeField] private TMP_Text _height;
     [SerializeField] private TMP_Text _record_height;
     [SerializeField] private Transform _heightColletor;
@@ -27,6 +31,24 @@ public class GameManager : MonoBehaviour
     }
     public int GetHeight(){
         return ((_lastHeight+6)*2);
+    }
+    public int GetCoinPlusLevel(){
+        return _coin_plus_level;
+    }
+    public int GetRokketLevel(){
+        return _rokket_impulse_level;
+    }
+    public int GetFashionLevel(){
+        return _fashion_level;
+    }
+    public void SetCoinPlusLevel(int new_level){
+        _coin_plus_level = new_level;
+    }
+    public void SetRokketLevel(int new_level){
+        _rokket_impulse_level = new_level;
+    }
+    public void SetFashionLevel(int new_level){
+        _fashion_level = new_level;
     }
     private static GameManager _instance;
     public static GameManager Instance
@@ -44,9 +66,13 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         DontDestroyOnLoad(gameObject);
+        _fashion_level = PlayerPrefs.GetInt("FashionLevel");
+        _rokket_impulse_level = PlayerPrefs.GetInt("RokketLevel");
+        _coin_plus_level = PlayerPrefs.GetInt("CoinPlusLevel");
     }
     void Start()
     {
+        
         _resultPanel.SetActive(false);
         _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString();
         _height.text = _lastHeight.ToString();
@@ -70,7 +96,7 @@ public class GameManager : MonoBehaviour
         
     }
     public void AddCoin(){
-        _coins++;
+        _coins+=10;
     }
     private void CreatePlataforms(){
         GameObject[] prefabsPlataforme;
@@ -190,6 +216,10 @@ public class GameManager : MonoBehaviour
         _maxHeight = 32;
         GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
         GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
-        Player.Instance.gameObject.transform.position = new Vector3(0,-6,0);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Invoke("SpawnPlayer",0.2f);
+    }
+    public void SpawnPlayer(){
+        Player.Instance.gameObject.transform.position = new Vector3(0,-1,0);
     }
 }
