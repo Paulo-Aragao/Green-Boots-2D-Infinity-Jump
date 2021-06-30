@@ -8,7 +8,7 @@ public class KillZone : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager.Instance.RestartLevel();
+            GameManager.Instance.GameOver();
         }
         
     }

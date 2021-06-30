@@ -7,9 +7,13 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     private float _maxHeight = 0;
+    private int _lastHeight = 6;
+    private int _coins = 0;
+    [SerializeField] private GameObject _resultPanel;
     [SerializeField] private GameObject[] _prefabPlataformes;
     [SerializeField] private GameObject[] _prefabPowerUps;
     [SerializeField] private GameObject[] _prefabEnemys;
+
     [SerializeField] private TMP_Text _height;
     [SerializeField] private TMP_Text _record_height;
     [SerializeField] private Transform _heightColletor;
@@ -18,7 +22,12 @@ public class GameManager : MonoBehaviour
     public float deltaTime;
     //config general const
     public float screenSize = 6;
-    private int _lastHeight = 6;
+    public int GetCoins(){
+        return _coins;
+    }
+    public int GetHeight(){
+        return ((_lastHeight+6)*2);
+    }
     private static GameManager _instance;
     public static GameManager Instance
     {
@@ -38,6 +47,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        _resultPanel.SetActive(false);
         _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString();
         _height.text = _lastHeight.ToString();
         CreatePlataforms();
@@ -59,6 +69,9 @@ public class GameManager : MonoBehaviour
         
         
     }
+    public void AddCoin(){
+        _coins++;
+    }
     private void CreatePlataforms(){
         GameObject[] prefabsPlataforme;
         GameObject[] prefabsPowerUp;
@@ -77,7 +90,7 @@ public class GameManager : MonoBehaviour
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,5,7,0);
         }
         else if(_lastHeight > 750 ){//mid-high
-            prefabsPlataforme = new GameObject[] {_prefabPlataformes[0],_prefabPlataformes[1],_prefabPlataformes[2],_prefabPlataformes[3]};
+            prefabsPlataforme = new GameObject[] {_prefabPlataformes[4],_prefabPlataformes[5],_prefabPlataformes[2],_prefabPlataformes[3]};
             prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
@@ -137,7 +150,8 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-    public void RestartLevel(){
+    public void GameOver(){
+        _resultPanel.SetActive(true);
         if(((_lastHeight+6)*2) > PlayerPrefs.GetInt("HighHeightScore"))
         {
             PlayerPrefs.SetInt("HighHeightScore" , ((_lastHeight+6)*2));
@@ -159,8 +173,12 @@ public class GameManager : MonoBehaviour
         {
             GameObject.Destroy(enemies[i]);
         }
+    }
+    public void RestartLevel(){
+        _resultPanel.SetActive(false);
         _snowControll.ResetSnow();
         _maxHeight = 0;
+        _coins = 0;
         _lastHeight = 0;    
         _height.text = _lastHeight.ToString();
         Instantiate(_prefabPlataformes[0], new Vector3(0,-9, 0), Quaternion.identity);

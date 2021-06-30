@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Plataforme : MonoBehaviour
 {
+    [SerializeField] private GameObject _coin;
+    void OnEnable()
+    {
+        PlayerPrefs.SetInt("CoinFrequency",30);
+        int coin_active_rand = Random.Range(0,100);
+        if(coin_active_rand < PlayerPrefs.GetInt("CoinFrequency")){
+            _coin.SetActive(true);
+        }
+    }
    // Update is called once per frame
     void Update()
     {
