@@ -74,8 +74,8 @@ public class GameManager : MonoBehaviour
     {
         
         _resultPanel.SetActive(false);
-        _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString();
-        _height.text = _lastHeight.ToString();
+        _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString()+"m";
+        _height.text = "0m";
         CreatePlataforms();
         _maxHeight = 32;
     }
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
         }
         if(Player.Instance.transform.position.y > _lastHeight){
             _lastHeight = (int)Player.Instance.transform.position.y;
-            _height.text = ((_lastHeight*2)+12).ToString();
+            _height.text = ((_lastHeight*2)+12).ToString() + "m";
         }   
         
         

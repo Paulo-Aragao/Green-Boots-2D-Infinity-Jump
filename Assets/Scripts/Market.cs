@@ -44,7 +44,7 @@ public class Market : MonoBehaviour
         }*/
         RefreshValues();
     }
-    private void RefreshValues(){
+    public void RefreshValues(){
         DefineCostItem(ref _fashion_cost_tmp,_fashion_cost_values,GameManager.Instance.GetFashionLevel());
         DefineCostItem(ref _rokket_cost_tmp,_rokket_cost_values,GameManager.Instance.GetRokketLevel());
         DefineCostItem(ref _coin_plus_cost_tmp,_coin_plus_cost_values,GameManager.Instance.GetCoinPlusLevel());
@@ -66,12 +66,12 @@ public class Market : MonoBehaviour
         }else{
             _fashion_cost_upgrade_bt.SetActive(false);
         }
-        if(PlayerPrefs.GetInt("Coins") > _rokket_cost_values[GameManager.Instance.GetFashionLevel()-1]){
+        if(PlayerPrefs.GetInt("Coins") > _rokket_cost_values[GameManager.Instance.GetRokketLevel()-1]){
             _rokket_cost_upgrade_bt.SetActive(true);
         }else{
             _rokket_cost_upgrade_bt.SetActive(false);
         }
-        if(PlayerPrefs.GetInt("Coins") > _coin_plus_cost_values[GameManager.Instance.GetFashionLevel()-1]){
+        if(PlayerPrefs.GetInt("Coins") > _coin_plus_cost_values[GameManager.Instance.GetCoinPlusLevel()-1]){
             _coin_plus_cost_upgrade_bt.SetActive(true);
         }else{
             _coin_plus_cost_upgrade_bt.SetActive(false);
@@ -85,14 +85,14 @@ public class Market : MonoBehaviour
         RefreshValues();
     }
     public void BuyRokket(){
-        PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")-_rokket_cost_values[GameManager.Instance.GetFashionLevel()-1]);
+        PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")-_rokket_cost_values[GameManager.Instance.GetRokketLevel()-1]);
         _total_coins.text = PlayerPrefs.GetInt("Coins").ToString();
         GameManager.Instance.SetRokketLevel(GameManager.Instance.GetRokketLevel()+1);
         PlayerPrefs.SetInt("RokketLevel",GameManager.Instance.GetRokketLevel());
         RefreshValues();
     }
     public void BuyCoinPlus(){
-        PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")-_coin_plus_cost_values[GameManager.Instance.GetFashionLevel()-1]);
+        PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")-_coin_plus_cost_values[GameManager.Instance.GetCoinPlusLevel()-1]);
         _total_coins.text = PlayerPrefs.GetInt("Coins").ToString();
         GameManager.Instance.SetCoinPlusLevel(GameManager.Instance.GetCoinPlusLevel()+1);
         PlayerPrefs.SetInt("CoinPlusLevel",GameManager.Instance.GetCoinPlusLevel());
