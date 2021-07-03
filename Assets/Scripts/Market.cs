@@ -17,31 +17,6 @@ public class Market : MonoBehaviour
     [SerializeField] private TMP_Text _total_coins;
     void OnEnable()
     {
-        /*
-        //fashion item
-        if(GameManager.Instance.GetFashionLevel == 1){
-            _fashion_cost.text = _fashion_cost_values[0].ToString();
-        }else if(GameManager.Instance.GetFashionLevel == 2){
-            _fashion_cost.text = _fashion_cost_values[1].ToString();
-        }else{
-            _fashion_cost.text = _fashion_cost_values[2].ToString();
-        } 
-        //rokket item
-        if(GameManager.Instance.GetRokketLevel == 1){
-            _fashion_cost.text = _rokket_cost_values[0].ToString();
-        }else if(GameManager.Instance.GetFashionLevel == 2){
-            _fashion_cost.text = _rokket_cost_values[1].ToString();
-        }else{
-            _fashion_cost.text = _rokket_cost_values[2].ToString();
-        }  
-        //coin plus item
-        if(GameManager.Instance.GetCoinPlusLevel == 1){
-            _fashion_cost.text = _coin_plus_cost_values[0].ToString();
-        }else if(GameManager.Instance.GetFashionLevel == 2){
-            _fashion_cost.text = _coin_plus_cost_values[1].ToString();
-        }else{
-            _fashion_cost.text = _coin_plus_cost_values[2].ToString();
-        }*/
         RefreshValues();
     }
     public void RefreshValues(){
@@ -55,24 +30,38 @@ public class Market : MonoBehaviour
             tmp.text = costs[0].ToString();
         }else if(level == 2){
             tmp.text = costs[1].ToString();
-        }else{
+        }else if(level == 3){
             tmp.text = costs[2].ToString();
-        } 
+        }else{
+            tmp.text = "MAX";
+        }
     }
     private void MoneyVerification(){
         //money verification
-        if(PlayerPrefs.GetInt("Coins") > _fashion_cost_values[GameManager.Instance.GetFashionLevel()-1]){
-            _fashion_cost_upgrade_bt.SetActive(true);
+        if(GameManager.Instance.GetFashionLevel() <= _fashion_cost_values.Length){
+            if(PlayerPrefs.GetInt("Coins") > _fashion_cost_values[GameManager.Instance.GetFashionLevel()-1]){
+                _fashion_cost_upgrade_bt.SetActive(true);
+            }else{
+                _fashion_cost_upgrade_bt.SetActive(false);
+            }
         }else{
             _fashion_cost_upgrade_bt.SetActive(false);
         }
-        if(PlayerPrefs.GetInt("Coins") > _rokket_cost_values[GameManager.Instance.GetRokketLevel()-1]){
-            _rokket_cost_upgrade_bt.SetActive(true);
+        if(GameManager.Instance.GetRokketLevel() <= _rokket_cost_values.Length){
+            if(PlayerPrefs.GetInt("Coins") > _rokket_cost_values[GameManager.Instance.GetRokketLevel()-1]){
+                _rokket_cost_upgrade_bt.SetActive(true);
+            }else{
+                _rokket_cost_upgrade_bt.SetActive(false);
+            }
         }else{
             _rokket_cost_upgrade_bt.SetActive(false);
         }
-        if(PlayerPrefs.GetInt("Coins") > _coin_plus_cost_values[GameManager.Instance.GetCoinPlusLevel()-1]){
-            _coin_plus_cost_upgrade_bt.SetActive(true);
+        if(GameManager.Instance.GetCoinPlusLevel() <= _coin_plus_cost_values.Length){
+            if(PlayerPrefs.GetInt("Coins") > _coin_plus_cost_values[GameManager.Instance.GetCoinPlusLevel()-1]){
+                _coin_plus_cost_upgrade_bt.SetActive(true);
+            }else{
+                _coin_plus_cost_upgrade_bt.SetActive(false);
+            }
         }else{
             _coin_plus_cost_upgrade_bt.SetActive(false);
         }

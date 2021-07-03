@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private float _maxHeight = 0;
@@ -109,7 +109,7 @@ public class GameManager : MonoBehaviour
             prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]};
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
             SpawnPlataformes(prefabsPlataforme,prefabsPowerUp,prefabsEnemys,3,6,0);
-        }else if(_lastHeight > 1200 ){//mid-high
+        }else if(_lastHeight > 1200 ){//height
             prefabsPlataforme = new GameObject[] {_prefabPlataformes[1],_prefabPlataformes[2],_prefabPlataformes[3]};
             prefabsPowerUp = new GameObject[] {_prefabPowerUps[0]}; 
             prefabsEnemys = new GameObject[] {_prefabEnemys[0]};
@@ -177,6 +177,7 @@ public class GameManager : MonoBehaviour
         }
     }
     public void GameOver(){
+        Player.Instance.gameObject.GetComponent<Player>().enabled = false;
         _resultPanel.SetActive(true);
         if(((_lastHeight+6)*2) > PlayerPrefs.GetInt("HighHeightScore"))
         {
@@ -216,10 +217,11 @@ public class GameManager : MonoBehaviour
         _maxHeight = 32;
         GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
         GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-        Invoke("SpawnPlayer",0.2f);
+        Invoke("SpawnPlayer",0.3f);
     }
     public void SpawnPlayer(){
+        Player.Instance.gameObject.GetComponent<Player>().enabled = true;
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
         Player.Instance.gameObject.transform.position = new Vector3(0,-1,0);
     }
 }
