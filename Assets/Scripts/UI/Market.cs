@@ -79,6 +79,8 @@ public class Market : MonoBehaviour
         GameManager.Instance.SetRokketLevel(GameManager.Instance.GetRokketLevel()+1);
         PlayerPrefs.SetInt("RokketLevel",GameManager.Instance.GetRokketLevel());
         RefreshValues();
+        AudioClip sfx = Resources.Load("sounds/SFX/buy") as AudioClip;
+        SoundManager.Instance.PlaySoundOnce(sfx);
     }
     public void BuyCoinPlus(){
         PlayerPrefs.SetInt("Coins",PlayerPrefs.GetInt("Coins")-_coin_plus_cost_values[GameManager.Instance.GetCoinPlusLevel()-1]);
@@ -86,5 +88,7 @@ public class Market : MonoBehaviour
         GameManager.Instance.SetCoinPlusLevel(GameManager.Instance.GetCoinPlusLevel()+1);
         PlayerPrefs.SetInt("CoinPlusLevel",GameManager.Instance.GetCoinPlusLevel());
         RefreshValues();
+        AudioClip sfx = Resources.Load("sounds/SFX/buy") as AudioClip;
+        SoundManager.Instance.PlaySoundOnce(sfx);
     }
 }

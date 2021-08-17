@@ -89,16 +89,14 @@ public class GameManager : MonoBehaviour
         deltaTime += (Time.deltaTime - deltaTime) * 0.1f;
         float fps = 1.0f / deltaTime;
         fpsText.text = Mathf.Ceil (fps).ToString ();
-        if(_heightColletor.position.y > _maxHeight){
+        if(_heightColletor.position.y > _maxHeight && _gameIsRunning){
             CreatePlataforms();
             _maxHeight = _heightColletor.position.y + 32;
         }
-        if(Player.Instance.transform.position.y > _lastHeight){
+        if(Player.Instance.transform.position.y > _lastHeight && _gameIsRunning){
             _lastHeight = (int)Player.Instance.transform.position.y;
             _height.text = ((_lastHeight*2)+12).ToString() + "m";
         }   
-        
-        
     }
     public void AddCoin(){
         _coins+=1;
@@ -184,7 +182,7 @@ public class GameManager : MonoBehaviour
     public void GameOver(){
         AudioClip sfx = Resources.Load("sounds/SFX/loss") as AudioClip;
         SoundManager.Instance.PlaySoundOnce(sfx);
-        Player.Instance.gameObject.GetComponent<Player>().enabled = false;
+        Player.Instance.gameObject.SetActive(false);
         _gameIsRunning = false;
         _resultPanel.SetActive(true);
         if(((_lastHeight+6)*2) > PlayerPrefs.GetInt("HighHeightScore"))
@@ -196,7 +194,9 @@ public class GameManager : MonoBehaviour
         GameObject[] plataforms = GameObject.FindGameObjectsWithTag("Plataforme");
         for(int i=0; i< plataforms.Length; i++)
         {
-            GameObject.Destroy(plataforms[i]);
+            if(!plataforms[i].GetComponent<Plataforme>().GetNotDestroy()){
+                GameObject.Destroy(plataforms[i]);
+            }
         }
         GameObject[] powerups = GameObject.FindGameObjectsWithTag("PowerUp");
         for(int i=0; i< powerups.Length; i++)
@@ -210,30 +210,24 @@ public class GameManager : MonoBehaviour
         }
     }
     public void RestartLevel(){
+        Player.Instance.gameObject.SetActive(true);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Player.Instance.gameObject.transform.position = new Vector3(0,-1,0);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+        GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
+        GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
         _resultPanel.SetActive(false);
+        AudioClip sfx = Resources.Load("sounds/SFX/click") as AudioClip;
+        SoundManager.Instance.PlaySoundOnce(sfx);
         _snowControll.ResetSnow();
         _maxHeight = 0;
         _coins = 0;
         _lastHeight = 0;    
         _height.text = _lastHeight.ToString();
-        Instantiate(_prefabPlataformes[0], new Vector3(0,-9, 0), Quaternion.identity);
-        Instantiate(_prefabPlataformes[0], new Vector3(-2.5f,-6, 0), Quaternion.identity);
-        Instantiate(_prefabPlataformes[0], new Vector3(2.5f,-3, 0), Quaternion.identity);
-        Instantiate(_prefabPlataformes[0], new Vector3(-2.5f,0, 0), Quaternion.identity);
-        Instantiate(_prefabPlataformes[0], new Vector3(2.5f,3, 0), Quaternion.identity);
         CreatePlataforms();
         _maxHeight = 32;
-        GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
-        GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-        Invoke("SpawnPlayer",0.5f);
-    }
-    public void SpawnPlayer(){
-        Player.Instance.gameObject.GetComponent<Player>().enabled = true;
-        Player.Instance.gameObject.transform.position = new Vector3(0,-1,0);
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
         _gameIsRunning = true;
     }
 }
