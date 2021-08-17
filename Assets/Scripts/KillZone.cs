@@ -10,6 +10,5 @@ public class KillZone : MonoBehaviour
         {
             GameManager.Instance.GameOver();
         }
-        
     }
 }

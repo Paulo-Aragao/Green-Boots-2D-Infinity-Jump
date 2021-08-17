@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
     private int _lastHeight = 6;
     private int _coins = 0;
     //power ups
-    private int _rokket_impulse_remaining = 1;
+    //private int _rokket_impulse_remaining = 1;
     private int _rokket_impulse_level = 1;
     private int _fashion_level = 1;
     private int _coin_plus_level = 1;
@@ -25,7 +25,11 @@ public class GameManager : MonoBehaviour
     public Text fpsText;
     public float deltaTime;
     //config general const
-    public float screenSize = 6;
+    public float SCREENSIZE = 6;
+    public bool _gameIsRunning = false;
+    public bool GetGameIsRunning(){
+        return _gameIsRunning;
+    }
     public int GetCoins(){
         return _coins;
     }
@@ -41,6 +45,7 @@ public class GameManager : MonoBehaviour
     public int GetFashionLevel(){
         return _fashion_level;
     }
+
     public void SetCoinPlusLevel(int new_level){
         _coin_plus_level = new_level;
     }
@@ -72,7 +77,7 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-        
+        _gameIsRunning = true;
         _resultPanel.SetActive(false);
         _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString()+"m";
         _height.text = "0m";
@@ -96,7 +101,7 @@ public class GameManager : MonoBehaviour
         
     }
     public void AddCoin(){
-        _coins+=10;
+        _coins+=1;
     }
     private void CreatePlataforms(){
         GameObject[] prefabsPlataforme;
@@ -177,7 +182,10 @@ public class GameManager : MonoBehaviour
         }
     }
     public void GameOver(){
+        AudioClip sfx = Resources.Load("sounds/SFX/loss") as AudioClip;
+        SoundManager.Instance.PlaySoundOnce(sfx);
         Player.Instance.gameObject.GetComponent<Player>().enabled = false;
+        _gameIsRunning = false;
         _resultPanel.SetActive(true);
         if(((_lastHeight+6)*2) > PlayerPrefs.GetInt("HighHeightScore"))
         {
@@ -217,11 +225,15 @@ public class GameManager : MonoBehaviour
         _maxHeight = 32;
         GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
         GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
-        Invoke("SpawnPlayer",0.3f);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 0;
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Invoke("SpawnPlayer",0.5f);
     }
     public void SpawnPlayer(){
         Player.Instance.gameObject.GetComponent<Player>().enabled = true;
-        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
         Player.Instance.gameObject.transform.position = new Vector3(0,-1,0);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+        Player.Instance.gameObject.GetComponent<Rigidbody2D>().gravityScale = 3;
+        _gameIsRunning = true;
     }
 }

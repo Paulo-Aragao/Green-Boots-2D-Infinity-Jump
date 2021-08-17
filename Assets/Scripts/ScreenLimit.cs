@@ -11,9 +11,9 @@ public class ScreenLimit : MonoBehaviour
         if (other.gameObject.CompareTag("Player"))
         {
             if(_right){
-                other.gameObject.transform.position = new Vector2(-1*GameManager.Instance.screenSize,other.gameObject.transform.position.y);
+                other.gameObject.transform.position = new Vector2(-1*GameManager.Instance.SCREENSIZE,other.gameObject.transform.position.y);
             }else{
-                other.gameObject.transform.position = new Vector2(GameManager.Instance.screenSize,other.gameObject.transform.position.y);
+                other.gameObject.transform.position = new Vector2(GameManager.Instance.SCREENSIZE,other.gameObject.transform.position.y);
             }
             
         }

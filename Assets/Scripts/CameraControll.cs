@@ -29,17 +29,20 @@ public class CameraControll : MonoBehaviour
     // Move to the target end position.
     void Update()
     {
-        if(transform.position.y > maxHeight){
+        if(GameManager.Instance.GetGameIsRunning()){
+            if(transform.position.y > maxHeight){
             maxHeight = maxHeight+2;
+            }
+            if(_endMarker.position.y > maxHeight){
+                // Distance moved equals elapsed time times speed..
+                float distCovered = Time.deltaTime * _speed;
+                // Fraction of journey completed equals current distance divided by total distance.
+                float fractionOfJourney = distCovered / _journeyLength;
+                // Set our position as a fraction of the distance between the markers.
+                _targetPosition = Vector3.Lerp(_startMarker.position, _endMarker.position , fractionOfJourney);
+                transform.position = new Vector3(transform.position.x,_targetPosition.y,transform.position.z);
+            }
         }
-        if(_endMarker.position.y > maxHeight){
-            // Distance moved equals elapsed time times speed..
-            float distCovered = Time.deltaTime * _speed;
-            // Fraction of journey completed equals current distance divided by total distance.
-            float fractionOfJourney = distCovered / _journeyLength;
-            // Set our position as a fraction of the distance between the markers.
-            _targetPosition = Vector3.Lerp(_startMarker.position, _endMarker.position , fractionOfJourney);
-            transform.position = new Vector3(transform.position.x,_targetPosition.y,transform.position.z);
-        }
+        
     }
 }
