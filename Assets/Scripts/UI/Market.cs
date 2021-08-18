@@ -12,6 +12,8 @@ public class Market : MonoBehaviour
     [SerializeField] private GameObject _rokket_cost_upgrade_bt;
     [SerializeField] private GameObject _coin_plus_cost_upgrade_bt;
     //[SerializeField] private int[] _fashion_cost_values;
+    [SerializeField] private TMP_Text _rokket_lvl_tmp;
+    [SerializeField] private TMP_Text _coin_plus_lvl_tmp;
     [SerializeField] private int[] _rokket_cost_values;
     [SerializeField] private int[] _coin_plus_cost_values;
     [SerializeField] private TMP_Text _total_coins;
@@ -22,7 +24,10 @@ public class Market : MonoBehaviour
     public void RefreshValues(){
         //DefineCostItem(ref _fashion_cost_tmp,_fashion_cost_values,GameManager.Instance.GetFashionLevel());
         DefineCostItem(ref _rokket_cost_tmp,_rokket_cost_values,GameManager.Instance.GetRokketLevel());
+        _rokket_lvl_tmp.text = "lv " + GameManager.Instance.GetRokketLevel().ToString();
         DefineCostItem(ref _coin_plus_cost_tmp,_coin_plus_cost_values,GameManager.Instance.GetCoinPlusLevel());
+        _coin_plus_lvl_tmp.text = "lv " + GameManager.Instance.GetCoinPlusLevel().ToString();
+
         MoneyVerification();
     }
     private void DefineCostItem(ref TMP_Text tmp, int[] costs,int level){

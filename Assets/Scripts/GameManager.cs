@@ -15,11 +15,14 @@ public class GameManager : MonoBehaviour
     private int _fashion_level = 1;
     private int _coin_plus_level = 1;
     [SerializeField] private GameObject _resultPanel;
+    [SerializeField] private GameObject _mainMenu;
     [SerializeField] private GameObject[] _prefabPlataformes;
     [SerializeField] private GameObject[] _prefabPowerUps;
     [SerializeField] private GameObject[] _prefabEnemys;
     [SerializeField] private TMP_Text _height;
     [SerializeField] private TMP_Text _record_height;
+    [SerializeField] private Slider _height_slide;
+    [SerializeField] private Slider _record_height_slide;
     [SerializeField] private Transform _heightColletor;
     [SerializeField] private SnowControll _snowControll;
     public Text fpsText;
@@ -77,10 +80,13 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
+        Player.Instance.gameObject.SetActive(false);
         _gameIsRunning = true;
         _resultPanel.SetActive(false);
         _record_height.text = PlayerPrefs.GetInt("HighHeightScore").ToString()+"m";
         _height.text = "0m";
+        _height_slide.value = 0;
+        _record_height_slide.value = PlayerPrefs.GetInt("HighHeightScore");
         CreatePlataforms();
         _maxHeight = 32;
     }
@@ -96,6 +102,7 @@ public class GameManager : MonoBehaviour
         if(Player.Instance.transform.position.y > _lastHeight && _gameIsRunning){
             _lastHeight = (int)Player.Instance.transform.position.y;
             _height.text = ((_lastHeight*2)+12).ToString() + "m";
+            _height_slide.value = (_lastHeight*2)+12;
         }   
     }
     public void AddCoin(){
@@ -190,6 +197,7 @@ public class GameManager : MonoBehaviour
             PlayerPrefs.SetInt("HighHeightScore" , ((_lastHeight+6)*2));
             PlayerPrefs.Save ();
             _record_height.text = ((_lastHeight+6)*2).ToString();
+            _record_height_slide.value = (_lastHeight+6)*2;
         }
         GameObject[] plataforms = GameObject.FindGameObjectsWithTag("Plataforme");
         for(int i=0; i< plataforms.Length; i++)
@@ -219,6 +227,7 @@ public class GameManager : MonoBehaviour
         GameObject.FindObjectOfType<Camera>().transform.position = new Vector3(0,0,-10);
         GameObject.FindObjectOfType<CameraControll>().maxHeight = 0;
         _resultPanel.SetActive(false);
+        _mainMenu.SetActive(false);
         AudioClip sfx = Resources.Load("sounds/SFX/click") as AudioClip;
         SoundManager.Instance.PlaySoundOnce(sfx);
         _snowControll.ResetSnow();
@@ -226,8 +235,15 @@ public class GameManager : MonoBehaviour
         _coins = 0;
         _lastHeight = 0;    
         _height.text = _lastHeight.ToString();
+        _height_slide.value = 0;
         CreatePlataforms();
         _maxHeight = 32;
         _gameIsRunning = true;
+    }
+    public void GoToMainMenu(){
+        _mainMenu.SetActive(true);
+    }
+    public void CloseGame(){
+        Application.Quit();
     }
 }

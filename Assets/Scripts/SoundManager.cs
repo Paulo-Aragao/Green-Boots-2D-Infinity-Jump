@@ -40,7 +40,13 @@ public class SoundManager : MonoBehaviour
             GetComponent<AudioSource>().loop = true;
             GetComponent<AudioSource>().Play ();
     }
+    public void PauseSound(){
+        GetComponent<AudioSource>().Pause();
+    }
+    public void ResumeSound(){
+        GetComponent<AudioSource>().Play();
 
+    }
     public void StopSound ()
     {
             GetComponent<AudioSource>().Stop ();
